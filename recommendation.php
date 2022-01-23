@@ -18,7 +18,7 @@ class Recommend {
     {
         $similar = array();
         $sum = 0;
-    
+        //echo $person1.$person2;
         if (is_array($preferences[$person1]) || is_object($preferences[$person1]))
         {
             foreach($preferences[$person1] as $key=>$value)
@@ -65,7 +65,8 @@ class Recommend {
     public function transformPreferences($preferences)
     {
         $result = array();
-        
+        if (is_array($preferences) || is_object($preferences))
+        {
         foreach($preferences as $otherPerson => $values)
         {
             foreach($values as $key => $value)
@@ -73,7 +74,7 @@ class Recommend {
                 $result[$key][$otherPerson] = $value;
             }
         }
-        
+    }
         return $result;
     }
     
@@ -84,14 +85,16 @@ class Recommend {
         $simSums = array();
         $ranks = array();
         $sim = 0;
-        
+        //print_r($preferences);
+
         foreach($preferences as $otherPerson=>$values)
         {
             if($otherPerson != $person)
             {
                 $sim = $this->similarityDistance($preferences, $person, $otherPerson);
             }
-            
+            echo "[".$person."-".$otherPerson."]  =>";
+            echo  sprintf("%.2f", $sim * 100) . "%<br>";
             if($sim > 0)
             {
                 foreach($preferences[$otherPerson] as $key=>$value)
