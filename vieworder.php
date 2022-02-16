@@ -1,98 +1,13 @@
 <!DOCTYPE html>
 <?php
+
 session_start();
 include('connection/connection.php');
 include("secure/encrypt_decrypt.php");
-
-//$custid = $_POST['custid'];
-require_once("recommendation.php");
-
-
-    
-$sql = "SELECT  custname, group_concat(plantname) as plantnames, group_concat(rate ) AS rates
-FROM orders INNER JOIN customers ON orders.custid=customers.custid  JOIN plants ON orders.plantid=plants.plantid where rate is not null
-group BY customers.custname  ";
+$sql = "SELECT * FROM orders join plants on orders.plantid = plants.plantid 
+join customers on orders.custid = customers.custid WHERE  orders.custid = '".$_SESSION['custid']."' ";
 $result = mysqli_query($conn,$sql);
-$arrrating = array(); 
-$arrname = array(); 
-$arrplant = array(); 
-$arrid = array(); 
-$checkrows = mysqli_num_rows($result);
-//$custname = $_GET[$_SESSION['custname']];
-
-
-if ($checkrows > 0)
-{
-    while($row=mysqli_fetch_assoc($result))
-    {
-        
-        array_push($arrname, $row['custname']);
-        array_push($arrplant, explode(',', $row['plantnames']));
-        array_push($arrrating, explode(',', $row['rates']));
-    }
-
-}
-//print_r($arrid);
-for($k = 0; $k < count($arrname); $k++) 
-{
-    $c[$k]=array_combine($arrplant[$k],$arrrating[$k]);
-}
-
-$recommend = array_combine($arrname, $c);
-
-//echo $_SESSION['custname'];
-$re = new Recommend();
-$recommends = $re->getRecommendations($recommend, $_SESSION["custname"] );
-$id = $re->getIdRecommendations($recommend, $_SESSION["custname"]);
-for($i = 0; $i < count($id); $i++) 
-{
-    array_push($arrid, $id[$i]);
-}
-
-//print_r($arrid);
-include("connection/connection.php");
-$status="";
-if (isset($_POST['plantcode']) && $_POST['plantcode']!=""){
-$plantcode = $_POST['plantcode'];
-$result = mysqli_query($conn,"SELECT * FROM plants WHERE plantcode='$plantcode'");
-$row = mysqli_fetch_assoc($result);
-$plantid = $row['plantid'];
-$plantname = $row['plantname'];
-$plantcode = $row['plantcode'];
-$price = $row['price'];
-$images = $row['images'];
-
-$cartArray = array(
-	$plantcode=>array(
-    'plantid'=>$plantid,
-	'plantname'=>$plantname,
-	'plantcode'=>$plantcode,
-	'price'=>$price,
-	'quantity'=>1,
-	'images'=>$images)
-);
-
-if(empty($_SESSION["shopping_cart"])) {
-    $_SESSION["shopping_cart"] = $cartArray;
-    $status = "<div class='box'>Product is added to your cart!</div>";
-}else{
-    $array_keys = array_keys($_SESSION["shopping_cart"]);
-    if(in_array($plantcode,$array_keys)) {
-	$status = "<div class='box' style='color:red;'>
-	Product is already added to your cart!</div>";	
-    } else {
-    $_SESSION["shopping_cart"] = array_merge(
-    $_SESSION["shopping_cart"],
-    $cartArray
-    );
-    $status = "<div class='box'>Product is added to your cart!</div>";
-	}
-
-	}
-}
 ?>
-
-
 <html lang="en">
 
 <head>
@@ -172,7 +87,7 @@ if(empty($_SESSION["shopping_cart"])) {
                     <nav class="classy-navbar justify-content-between" id="alazeaNav">
 
                         <!-- Nav Brand -->
-                        <a href="index.php" class="nav-brand"></a>
+                        <a href="index.php" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -224,7 +139,7 @@ if(empty($_SESSION["shopping_cart"])) {
     <div class="breadcrumb-area">
         <!-- Top Breadcrumb Area -->
         <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(img/bg-img/24.jpg);">
-            <h2>Shop</h2>
+            <h2>order</h2>
         </div>
 
         <div class="container">
@@ -242,125 +157,62 @@ if(empty($_SESSION["shopping_cart"])) {
     </div>
     <!-- ##### Breadcrumb Area End ##### -->
 
-    <!-- ##### Shop Area Start ##### -->
-    <section class="shop-page section-padding-0-100">
-        <div class="container">
-            <div class="row">
-                <!-- Shop Sorting Data -->
-                <div class="col-12">
-                    <div class="shop-sorting-data d-flex flex-wrap align-items-center justify-content-between">
-                        <!-- Shop Page Count -->
-                        <div class="shop-page-count">
-                            <p>Showing 1–9 of 72 results</p>
-                        </div>
-                        <!-- Search by Terms -->
-                        <div class="search_by_terms">
-                            <form action="#" method="post" class="form-inline">
-                                <select class="custom-select widget-title">
-                                  <option selected>Short by Popularity</option>
-                                  <option value="1">Short by Newest</option>
-                                  <option value="2">Short by Sales</option>
-                                  <option value="3">Short by Ratings</option>
-                                </select>
-                                <select class="custom-select widget-title">
-                                  <option selected>Show: 9</option>
-                                  <option value="1">12</option>
-                                  <option value="2">18</option>
-                                  <option value="3">24</option>
-                                </select>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <!-- Sidebar Area -->
-                <div class="col-12 col-md-4 col-lg-3">
-                    <div class="shop-sidebar-area">
-                        
-                    <h4 class="widget-title">Categories</h4>
-                    <!-- Divider -->
-                        <hr class="sidebar-divider d-none d-md-block">
-                    <form  method="post" action = "filter.php" >
-                        <!-- Shop Widget -->
-                        <div >
-                            <h4 class="widget-title">Types</h4>
-                            <br>
-                            <input type="radio" id="flower" name="typeid" value="2">
-                            <label for="flower">Flowers</label><br>
-                            <input type="radio" id="tree" name="typeid" value="1">
-                            <label for="tree">Trees</label><br>
-                            <input type="radio" id="herb" name="typeid" value="3">
-                            <label for="herb">Herbs</label>
-                        </div>
-                        <br>
-
-                        <!-- Divider -->
-                        <hr class="sidebar-divider d-none d-md-block">
-
-                        <!-- Shop Widget -->
-                        <div >                       
-                            <h4 class="widget-title">Places</h4>
-                            <br>
-                            <input type="radio" id="indoor" name="placeid" value="1">
-                            <label for="indoor">Indoor Plant</label><br>
-                            <input type="radio" id="outdoor" name="placeid" value="2">
-                            <label for="outdoor">Outdoor Plant</label>
-                        </div>
-                        <br>
-
-                        <!-- Divider -->
-                        <hr class="sidebar-divider d-none d-md-block">
-
-                        <!-- Shop Widget -->
-                        <div >                       
-                            <h4 class="widget-title">Sizes</h4>
-                            <br>
-                            <input type="radio" id="small" name="sizeid" value="1">
-                            <label for="small">Small</label><br>
-                            <input type="radio" id="medium" name="sizeid" value="2">
-                            <label for="medium">Medium</label><br>
-                            <input type="radio" id="big" name="sizeid" value="3">
-                            <label for="big">Big</label>
-                        </div>
-                        <br>
-                        <input type="submit" name="filter"  value="Filter" class="btn btn-warning text-white" onclick="return Confirm()"/>
-                                </form> 
-                    </div>
-                </div>
+    
                 <!-- All Products Area -->
-                <div class="col-12 col-md-8 col-lg-9">
-                    <div class="shop-products-area">
-                        <div class="row">
-                        
-                            <?php
-                            include('connection/connection.php');
-                        
-                            for($k = 0; $k < count($arrid); $k++)
-                            {
-                                $sql = "SELECT * FROM plants WHERE plantname = '".$arrid[$k]."' ";
-                                $result = mysqli_query($conn,$sql);
-                                $row=mysqli_fetch_assoc($result);
-                                
-                            ?> 
-                                <div class='product_wrapper'>
-                                    <form method='post' action='array.php'>
-                                    <input type='hidden' name='plantid' value=<?php echo "{$row['plantid']}" ;?>  />
-                                    <input type='hidden' name='plantcode' value=<?php echo "{$row['plantcode']}" ;?> />
-                                    <div class='image'><a href="shop-details.php?plantid=<?php echo "{".urlencode(secured_encrypt($row['plantid']))."}" ;?>"><img src="img/bg-img/<?php echo "{$row['images']}" ;?>" alt="" style="width:150px;height:150px;"></a></div>
-                                    <div class='name'><a href="shop-details.php?plantid=<?php echo "{".urlencode(secured_encrypt($row['plantid']))."}" ;?>"><?php echo "{$row['plantname']}" ;?></a></div>
-                                    <div class='price'>RM <?php echo "{$row['price']}" ;?></div>
-                                    <button type='submit'  class='buy'>Buy Now</button>
-                                </div>
-                                <?php      
-                                }
-                                        
-                                ?>   
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">List of Plants</h6>
                         </div>
+                        <div class="card-body">
+                            
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer Name</th>
+                                            <th>Plant Name</th>
+                                            <th>Rate</th>
+                                            <th>Update</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer Name</th>
+                                            <th>Plant Name</th>
+                                            <th>Rate</th>
+                                            <th>Update</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <?php
+                                                while($row4=mysqli_fetch_assoc($result))
+                                                {
+                                                include('connection/connection.php');
+                                                    echo "<tr>";
+                                                    echo "<td>" . $row4['orderid'] . "</td>";
+                                                    echo "<td>" . $row4['custname'] . "</td>";
+                                                    echo "<td>" . $row4['plantname'] . "</td>";
+                                                    echo "<td>" . $row4['rate'] . "</td>";
+                                                    echo "<td><a href='giverate.php?orderid=".urlencode(secured_encrypt($row4['orderid']))."'>RATE</a></td>";
+                                                    echo "</tr>";
+                                                
+                                                
+                                                }
 
-                        <!-- Pagination -->
+                                            ?>
 
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
                     </div>
                 </div>
             </div>
@@ -415,7 +267,8 @@ if(empty($_SESSION["shopping_cart"])) {
                         </div>
                     </div>
 
-                    
+                   
+
                     <!-- Single Footer Widget -->
                     <div class="col-12 col-sm-6 col-lg-3">
                         <div class="single-footer-widget">
@@ -484,6 +337,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="js/plugins/plugins.js"></script>
     <!-- Active js -->
     <script src="js/active.js"></script>
+        <!-- Page level plugins -->
+        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
 </body>
 
 </html>

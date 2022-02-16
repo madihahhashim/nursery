@@ -43,12 +43,16 @@ $message = "";
  if(isset($_GET['plantid']))
  {
    include("connection/connection.php");
-   //include("secure/encrypt_decrypt.php");
-   $plantid = $_GET['plantid'];
+   include("secure/encrypt_decrypt.php");
+   $plantid = urldecode(secured_decrypt($_GET['plantid']));
    $sql = "SELECT * FROM plants WHERE plantid = $plantid";
    
    $qry = mysqli_query($conn, $sql);
    $resultb = mysqli_fetch_assoc($qry);
+
+   $sql1 = "SELECT AVG(rate) as rating from orders WHERE plantid = $plantid"; 
+    $qry1 = mysqli_query($conn, $sql1);
+    $result = mysqli_fetch_assoc($qry1);
    //echo $resultb;
  }
 
@@ -61,19 +65,26 @@ if(isset($_POST['update']))
   $descriptions = $_POST['descriptions'];
   $price =$_POST['price'];
   $rating =$_POST['rating'];
-  //$image =$_POST['image'];
+  //$images =$_POST['images'];
   $placeid =$_POST['placeid'];
   $typeid =$_POST['typeid'];
   $sizeid =$_POST['sizeid'];
   $adminid =$_POST['adminid'];
   $curtime = date("Y-m-d H:i:s");
 
+  $filename = $_FILES["uploadfile"]["name"];
+  $tempname = $_FILES["uploadfile"]["tmp_name"];    
+      $folder = "C:/xampp/htdocs/nursery/img/bg-img/".$filename;
+        
 
-  $query = "UPDATE plants SET  plantcode = '$plantcode', plantname = '$plantname', descriptions='$descriptions', price = '$price', rating='$rating', 
-             placeid=$placeid, typeid=$typeid, sizeid=$sizeid, adminid=$adminid, updatetime = '".$curtime."' WHERE plantid = $plantid";
-  //echo $query;
-  
-    if(!mysqli_query($conn, $query)) 
+      //echo $qry1;
+      // Get all the submitted data from the form
+    
+      $query = "UPDATE plants SET  plantcode = '$plantcode', plantname = '$plantname', descriptions='$descriptions', price = '$price', rating='$rating', images = '$filename',
+      placeid=$placeid, typeid=$typeid, sizeid=$sizeid, adminid=$adminid, updatetime = '".$curtime."' WHERE plantid = $plantid";
+
+      // Execute query
+      if(!mysqli_query($conn, $query)) 
     {
     echo "<script>
         $(document).ready(function(){
@@ -92,6 +103,21 @@ if(isset($_POST['update']))
 
         header("Location: viewplant.php?op=success");
     }
+        
+      // Now let's move the uploaded image into the folder: image
+      if (move_uploaded_file($tempname, $folder))  
+      {
+          $message = "Image uploaded successfully";
+      }
+      else
+      {
+          $message = "Failed to upload image";
+      }
+
+  
+    echo $query;
+  
+    
 }
 else if(isset($_POST['delete']))
 {
@@ -132,33 +158,6 @@ else if(isset($_POST['delete']))
     header("Location: viewplant.php?op=success");
     }
 }
-else if(isset($_POST['upload'])) 
-{ 
-  
-// If upload button is clicked ...
-  $filename = $_FILES["uploadfile"]["name"];
-  $tempname = $_FILES["uploadfile"]["tmp_name"];    
-      $folder = "C:/xampp/htdocs/nursery/img/image/".$filename;
-        
-      include("connection/connection.php");
-      $plantid = $_POST['plantid'];
-      // Get all the submitted data from the form
-      $sql = "UPDATE plants SET  image = '$filename' WHERE plantid = $plantid";
-
-      // Execute query
-      mysqli_query($conn, $sql);
-        
-      // Now let's move the uploaded image into the folder: image
-      if (move_uploaded_file($tempname, $folder))  
-      {
-          $message = "Image uploaded successfully";
-      }
-      else
-      {
-          $message = "Failed to upload image";
-      }
-}
-//$result = mysqli_query($conn, "SELECT * FROM plants");
 
 ?>
     
@@ -369,7 +368,7 @@ else if(isset($_POST['upload']))
                             <div class="table-responsive">
                         <form  method="post" action = "updateplant.php" enctype="multipart/form-data">
                         <div class="form-group">
-                                <input type="text" class="form-control form-control-user" name="plantid"  value="<?php echo $resultb['plantid']; ?>"  required >
+                                <input type="hidden" class="form-control form-control-user" name="plantid"  value="<?php echo $resultb['plantid']; ?>"  required >
                             </div>
                             <div class="form-group">
                                 <input type="text" class="form-control form-control-user" name="plantcode"  value="<?php echo $resultb['plantcode']; ?>"  required >
@@ -378,7 +377,7 @@ else if(isset($_POST['upload']))
                                 <input type="text" class="form-control form-control-user" name="plantname"  value="<?php echo $resultb['plantname']; ?>"  required >
                             </div>
                             <div class="form-group">
-                                <select class="select2 form-control custom-select" placeholder="Type" name="typeid" value="<?php echo $resultb['typeid']; ?>">
+                                <select class="select2 form-control custom-select" placeholder="Type" name="typeid" value="<?php echo $resultb['typeid']; ?>" required>
                                 <option>TYPE</option>
                                     <?php
                                         include("connection/connection.php");
@@ -400,7 +399,7 @@ else if(isset($_POST['upload']))
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select class="select2 form-control custom-select"  name="placeid" value="<?php echo $resultb['placeid']; ?>">
+                                <select class="select2 form-control custom-select"  name="placeid" value="<?php echo $resultb['placeid']; ?>" required>
                                 <option>PLACE</option>   
                                         <?php
                                         include("connection/connection.php");
@@ -424,7 +423,7 @@ else if(isset($_POST['upload']))
                                 </select>
                             </div>
                             <div class="form-group">
-                                <select class="select2 form-control custom-select"  name="sizeid" value="<?php echo $resultb['sizeid']; ?>">
+                                <select class="select2 form-control custom-select"  name="sizeid" value="<?php echo $resultb['sizeid']; ?>" required>
                                 <option>SIZE</option>   
                                         <?php
                                         include("connection/connection.php");
@@ -454,10 +453,10 @@ else if(isset($_POST['upload']))
                                 <input type="text" class="form-control form-control-user" name="price" placeholder="PRICE" value="<?php echo $resultb['price']; ?>" required >
                             </div>
                             <div class="form-group">
-                                <input type="text"  class="form-control form-control-user" name="rating" placeholder="RATING" value="<?php echo $resultb['rating']; ?>" required >
+                                <input type="text"  class="form-control form-control-user" name="rating" placeholder="RATING" value="<?php echo number_format($result['rating'],1); ?>"  readonly>
                             </div>
                             <div class="form-group">
-                                <select class="select2 form-control custom-select"  name="adminid" value="<?php echo $resultb['adminid']; ?>">
+                                <select class="select2 form-control custom-select"  name="adminid" value="<?php echo $resultb['adminid']; ?>" required>
                                 <option>ADMIN</option>
                                     
                                     <?php
@@ -479,11 +478,8 @@ else if(isset($_POST['upload']))
                                     ?>
                                 </select>
                             </div>
-                                <input type="file" name="uploadfile" value=""/>
-                                    
-                                <div>
-                                    <button type="submit" name="upload">UPLOAD</button>
-                                    </div>
+                                <input type="file" name="uploadfile" value="" />
+                                <br><br>
                             <div class="form-group" style="width: 100%" class="btn-lg justify-content-center">
                             <input type="submit" name="update"  value="Update" class="btn btn-warning text-white" onclick="return Confirm()"/>
                             <input type="submit" name="delete"  value="Delete" class="btn btn-danger text-white" onclick="return Confirm()"/>
@@ -526,19 +522,19 @@ else if(isset($_POST['upload']))
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          
-          <h4 class="modal-title">
-									<?php if(isset($_GET['op'])) { echo modalTitle($_GET['op']); } ?>
-								</h4>
-							</div>
-							<div class="modal-body">
-								<p><?php if(isset($_GET['op'])) { echo modalMessage($_GET['op']); } ?></p>
-							</div>
+            <div class="modal-header">
+            
+            <h4 class="modal-title">
+                <?php if(isset($_GET['op'])) { echo modalTitle($_GET['op']); } ?>
+            </h4>
+            </div>
+            <div class="modal-body">
+                <p><?php if(isset($_GET['op'])) { echo modalMessage($_GET['op']); } ?></p>
+            </div>
           </button>
           <div class="modal-footer">
           <button class="btn btn-danger" type="button" data-dismiss="modal">OK</button>
-        </div>
+          </div>
         </div>
        
     </div>

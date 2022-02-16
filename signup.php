@@ -115,7 +115,7 @@ if(isset($_POST['submit']))
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-5 d-none d-lg-block "><img src="img/bg-img/36.jpg" alt="" style="width:500px;height:570px;"></div>
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
@@ -147,10 +147,7 @@ if(isset($_POST['submit']))
                           </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.html">Already have an account? Login!</a>
+                                <a class="small" href="logincustomer.php">Already have an account? Login!</a>
                             </div>
                         </div>
                     </div>

@@ -2,45 +2,52 @@
 <?php
 session_start();
 include("connection/connection.php");
+include("secure/encrypt_decrypt.php");
 $status="";
-if (isset($_POST['plantcode']) && $_POST['plantcode']!=""){
-$plantcode = $_POST['plantcode'];
-$result = mysqli_query($conn,"SELECT * FROM plants WHERE plantcode='$plantcode'");
-$row = mysqli_fetch_assoc($result);
-$plantid = $row['plantid'];
-$plantname = $row['plantname'];
-$plantcode = $row['plantcode'];
-$price = $row['price'];
-$image = $row['image'];
 
-$cartArray = array(
-	$plantcode=>array(
-    'plantid'=>$plantid,
-	'plantname'=>$plantname,
-	'plantcode'=>$plantcode,
-	'price'=>$price,
-	'quantity'=>1,
-	'image'=>$image)
-);
+    if (isset($_POST['plantcode']) && $_POST['plantcode']!="")
+    {
+        $plantcode = $_POST['plantcode'];
+        $result = mysqli_query($conn,"SELECT * FROM plants WHERE plantcode='$plantcode'");
+        $row = mysqli_fetch_assoc($result);
+        $plantid = $row['plantid'];
+        $plantname = $row['plantname'];
+        $plantcode = $row['plantcode'];
+        $price = $row['price'];
+        $images = $row['images'];
 
-if(empty($_SESSION["shopping_cart"])) {
-    $_SESSION["shopping_cart"] = $cartArray;
-    $status = "<div class='box'>Product is added to your cart!</div>";
-}else{
-    $array_keys = array_keys($_SESSION["shopping_cart"]);
-    if(in_array($plantcode,$array_keys)) {
-	$status = "<div class='box' style='color:red;'>
-	Product is already added to your cart!</div>";	
-    } else {
-    $_SESSION["shopping_cart"] = array_merge(
-    $_SESSION["shopping_cart"],
-    $cartArray
-    );
-    $status = "<div class='box'>Product is added to your cart!</div>";
-	}
+        $cartArray = array(
+            $plantcode=>array(
+            'plantid'=>$plantid,
+            'plantname'=>$plantname,
+            'plantcode'=>$plantcode,
+            'price'=>$price,
+            'quantity'=>1,
+            'images'=>$images)
+        );
 
-	}
-}
+        if(empty($_SESSION["shopping_cart"])) {
+            $_SESSION["shopping_cart"] = $cartArray;
+            $status = "<div class='box'>Product is added to your cart!</div>";
+        }
+        else
+        {
+            $array_keys = array_keys($_SESSION["shopping_cart"]);
+            if(in_array($plantcode,$array_keys)) {
+            $status = "<div class='box' style='color:red;'>
+            Product is already added to your cart!</div>";	
+            } else {
+            $_SESSION["shopping_cart"] = array_merge(
+            $_SESSION["shopping_cart"],
+            $cartArray
+            );
+            $status = "<div class='box'>Product is added to your cart!</div>";
+            }
+
+        }
+    }
+
+
 ?>
 <html lang="en">
 
@@ -88,9 +95,9 @@ if(empty($_SESSION["shopping_cart"])) {
                             <!-- Top Header Content -->
                             <div class="top-header-meta d-flex">
                                 
-                                <!-- Login -->
+                                <!-- Logout -->
                                 <div class="login">
-                                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span>Login</span></a>
+                                    <a href="index.php"><i class="fa fa-user" aria-hidden="true"></i> <span>Logout</span></a>
                                 </div>
                                 <!-- Cart -->
                                 <?php
@@ -121,7 +128,7 @@ if(empty($_SESSION["shopping_cart"])) {
                     <nav class="classy-navbar justify-content-between" id="alazeaNav">
 
                         <!-- Nav Brand -->
-                        <a href="index.html" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+                        <a href="index.php" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -139,38 +146,9 @@ if(empty($_SESSION["shopping_cart"])) {
                             <!-- Navbar Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="#">Pages</a>
-                                        <ul class="dropdown">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="shop.html">Shop</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="shop.html">Shop</a></li>
-                                                    <li><a href="shop-details.html">Shop Details</a></li>
-                                                    <li><a href="cart.php">Shopping Cart</a></li>
-                                                    <li><a href="checkout.html">Checkout</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="portfolio.html">Portfolio</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                                    <li><a href="single-portfolio.html">Portfolio Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="blog.html">Blog</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="single-post.html">Blog Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="index.php">Home</a></li>
+                                    <li><a href="shop.php">Shop</a></li>
+                                    <li><a href="vieworder.php">Order</a></li>
                                 </ul>
 
                                 <!-- Search Icon -->
@@ -256,387 +234,89 @@ if(empty($_SESSION["shopping_cart"])) {
                 <!-- Sidebar Area -->
                 <div class="col-12 col-md-4 col-lg-3">
                     <div class="shop-sidebar-area">
+                        
+                    <h4 class="widget-title">Categories</h4>
+                    <!-- Divider -->
+                        <hr class="sidebar-divider d-none d-md-block">
+                    <form  method="post" action = "filter.php" >
+                        <!-- Shop Widget -->
+                        <div >
+                            <h4 class="widget-title">Types</h4>
+                            <br>
+                            <input type="radio" id="flower" name="typeid" value="2">
+                            <label for="flower">Flowers</label><br>
+                            <input type="radio" id="tree" name="typeid" value="1">
+                            <label for="tree">Trees</label><br>
+                            <input type="radio" id="herb" name="typeid" value="3">
+                            <label for="herb">Herbs</label>
+                        </div>
+                        <br>
+
+                        <!-- Divider -->
+                        <hr class="sidebar-divider d-none d-md-block">
 
                         <!-- Shop Widget -->
-                        <div class="shop-widget price mb-50">
-                            <h4 class="widget-title">Prices</h4>
-                            <div class="widget-desc">
-                                <div class="slider-range">
-                                    <div data-min="8" data-max="30" data-unit="$" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="8" data-value-max="30" data-label-result="Price:">
-                                        <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
-                                        <span class="ui-slider-handle ui-state-default ui-corner-all first-handle" tabindex="0"></span>
-                                        <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                                    </div>
-                                    <div class="range-price">Price: $8 - $30</div>
-                                </div>
-                            </div>
+                        <div >                       
+                            <h4 class="widget-title">Places</h4>
+                            <br>
+                            <input type="radio" id="indoor" name="placeid" value="1">
+                            <label for="indoor">Indoor Plant</label><br>
+                            <input type="radio" id="outdoor" name="placeid" value="2">
+                            <label for="outdoor">Outdoor Plant</label>
                         </div>
+                        <br>
+
+                        <!-- Divider -->
+                        <hr class="sidebar-divider d-none d-md-block">
 
                         <!-- Shop Widget -->
-                        <div class="shop-widget catagory mb-50">
-                            <h4 class="widget-title">Categories</h4>
-                            <div class="widget-desc">
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                    <label class="custom-control-label" for="customCheck1">All plants <span class="text-muted">(72)</span></label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                    <label class="custom-control-label" for="customCheck2">Outdoor plants <span class="text-muted">(20)</span></label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck3">
-                                    <label class="custom-control-label" for="customCheck3">Indoor plants <span class="text-muted">(15)</span></label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck4">
-                                    <label class="custom-control-label" for="customCheck4">Office Plants <span class="text-muted">(20)</span></label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck5">
-                                    <label class="custom-control-label" for="customCheck5">Potted <span class="text-muted">(15)</span></label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                    <label class="custom-control-label" for="customCheck6">Others <span class="text-muted">(2)</span></label>
-                                </div>
-                            </div>
+                        <div >                       
+                            <h4 class="widget-title">Sizes</h4>
+                            <br>
+                            <input type="radio" id="small" name="sizeid" value="1">
+                            <label for="small">Small</label><br>
+                            <input type="radio" id="medium" name="sizeid" value="2">
+                            <label for="medium">Medium</label><br>
+                            <input type="radio" id="big" name="sizeid" value="3">
+                            <label for="big">Big</label>
                         </div>
-
-                        <!-- Shop Widget -->
-                        <div class="shop-widget sort-by mb-50">
-                            <h4 class="widget-title">Sort by</h4>
-                            <div class="widget-desc">
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck7">
-                                    <label class="custom-control-label" for="customCheck7">New arrivals</label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck8">
-                                    <label class="custom-control-label" for="customCheck8">Alphabetically, A-Z</label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck9">
-                                    <label class="custom-control-label" for="customCheck9">Alphabetically, Z-A</label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center mb-2">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck10">
-                                    <label class="custom-control-label" for="customCheck10">Price: low to high</label>
-                                </div>
-                                <!-- Single Checkbox -->
-                                <div class="custom-control custom-checkbox d-flex align-items-center">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck11">
-                                    <label class="custom-control-label" for="customCheck11">Price: high to low</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Shop Widget -->
-                        <div class="shop-widget best-seller mb-50">
-                            <h4 class="widget-title">Best Seller</h4>
-                            <div class="widget-desc">
-
-                                <!-- Single Best Seller Products -->
-                                <div class="single-best-seller-product d-flex align-items-center">
-                                    <div class="product-thumbnail">
-                                        <a href="shop-details.html"><img src="img/bg-img/4.jpg" alt=""></a>
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="shop-details.html">Cactus Flower</a>
-                                        <p>$10.99</p>
-                                        <div class="ratings">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Single Best Seller Products -->
-                                <div class="single-best-seller-product d-flex align-items-center">
-                                    <div class="product-thumbnail">
-                                        <a href="shop-details.html"><img src="img/bg-img/5.jpg" alt=""></a>
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="shop-details.html">Tulip Flower</a>
-                                        <p>$11.99</p>
-                                        <div class="ratings">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Single Best Seller Products -->
-                                <div class="single-best-seller-product d-flex align-items-center">
-                                    <div class="product-thumbnail">
-                                        <a href="shop-details.html"><img src="img/bg-img/34.jpg" alt=""></a>
-                                    </div>
-                                    <div class="product-info">
-                                        <a href="shop-details.html">Recuerdos Plant</a>
-                                        <p>$9.99</p>
-                                        <div class="ratings">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                        <br>
+                        <input type="submit" name="filter"  value="Filter" class="btn btn-warning text-white" onclick="return Confirm()"/>
+                                </form> 
                     </div>
                 </div>
-                <?php
-                                $result = mysqli_query($conn,"SELECT * FROM plants");
-                                while($row = mysqli_fetch_assoc($result)){
-                                    echo "<div class='product_wrapper'>
-                                    <form method='post' action=''>
-                                    <input type='hidden' name='plantid' value=".$row['plantid']." />
-                                    <input type='hidden' name='plantcode' value=".$row['plantcode']." />
-                                    <div class='image'><img src='".$row['image']."' /></div>
-                                    <div class='plantname'>".$row['plantname']."</div>
-                                    <div class='price'>$".$row['price']."</div>
-                                    <button type='submit' class='buy'>Buy Now</button>
-                                    </form>
-                                    </div>";
-                                        }
-                                mysqli_close($conn);
-                                ?>
-
-                                <div style="clear:both;"></div>
-
-                                <div class="message_box" style="margin:10px 0px;">
-                                <?php echo $status; ?>
-                                </div>
                 <!-- All Products Area -->
                 <div class="col-12 col-md-8 col-lg-9">
                     <div class="shop-products-area">
                         <div class="row">
+                            <?php
+                            $result = mysqli_query($conn,"SELECT * FROM plants");
+                            $counter = 1;
+                            while($row = mysqli_fetch_assoc($result)){
+                                ?> 
+                                <!-- Single Product Area -->
 
-                            <!-- Single Product Area -->
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="single-product-area mb-50">
-                                    <!-- Product Image -->
-                                    <div class="product-img">
-                                        <a href="shop-details.html"><img src="img/bg-img/40.png" alt=""></a>
-                                        <!-- Product Tag -->
-                                        <div class="product-tag">
-                                            <a href="#">Hot</a>
+                                        <div class='product_wrapper'>
+                                            <form method='post' action='shop.php'>
+                                            <input type='hidden' name='plantid' value=<?php echo "{$row['plantid']}" ;?>  />
+                                            <input type='hidden' name='plantcode' value=<?php echo "{$row['plantcode']}" ;?> />
+                                            <div class='image'><a href="shop-details.php?plantid=<?php echo "{".urlencode(secured_encrypt($row['plantid']))."}" ;?>"><img src="img/bg-img/<?php echo "{$row['images']}" ;?>" alt="" style="width:150px;height:150px;"></a></div>
+                                            <div class='name'><a href="shop-details.php?plantid=<?php echo "{".urlencode(secured_encrypt($row['plantid']))."}" ;?>"><?php echo "{$row['plantname']}" ;?></a></div>
+                                            <div class='price'>RM <?php echo "{$row['price']}" ;?></div>
+                                            <button type='submit'  class='buy'>Buy Now</button>
+                                            </form>
                                         </div>
-                                        <div class="product-meta d-flex">
-                                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                            <a href="cart.php" class="add-to-cart-btn">Add to cart</a>
-                                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
+                                        <?php      }
+                                            $counter++;
+                                             mysqli_close($conn);
+                                        ?>
+                                        <!-- Product Info -->
+                                        <div style="clear:both;"></div>
+                                        <div class="message_box" style="margin:10px 0px;">
+                                        <?php echo $status; ?>
                                         </div>
-                                    </div>
-                                    <!-- Product Info -->
-                                    <div class="product-info mt-15 text-center">
-                                        <a href="shop-details.html">
-                                            <p>Cactus Flower</p>
-                                        </a>
-                                        <h6>$10.99</h6>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Single Product Area -->
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="single-product-area mb-50">
-                                    <!-- Product Image -->
-                                    <div class="product-img">
-                                        <a href="shop-details.html"><img src="img/bg-img/41.png" alt=""></a>
-                                        <div class="product-meta d-flex">
-                                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                            <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Info -->
-                                    <div class="product-info mt-15 text-center">
-                                        <a href="shop-details.html">
-                                            <p>Cactus Flower</p>
-                                        </a>
-                                        <h6>$10.99</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Single Product Area -->
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="single-product-area mb-50">
-                                    <!-- Product Image -->
-                                    <div class="product-img">
-                                        <a href="shop-details.html"><img src="img/bg-img/42.png" alt=""></a>
-                                        <div class="product-meta d-flex">
-                                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                            <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Info -->
-                                    <div class="product-info mt-15 text-center">
-                                        <a href="shop-details.html">
-                                            <p>Cactus Flower</p>
-                                        </a>
-                                        <h6>$10.99</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Single Product Area -->
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="single-product-area mb-50">
-                                    <!-- Product Image -->
-                                    <div class="product-img">
-                                        <a href="shop-details.html"><img src="img/bg-img/43.png" alt=""></a>
-                                        <div class="product-meta d-flex">
-                                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                            <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Info -->
-                                    <div class="product-info mt-15 text-center">
-                                        <a href="shop-details.html">
-                                            <p>Cactus Flower</p>
-                                        </a>
-                                        <h6>$10.99</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Single Product Area -->
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="single-product-area mb-50">
-                                    <!-- Product Image -->
-                                    <div class="product-img">
-                                        <a href="shop-details.html"><img src="img/bg-img/44.png" alt=""></a>
-                                        <div class="product-meta d-flex">
-                                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                            <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Info -->
-                                    <div class="product-info mt-15 text-center">
-                                        <a href="shop-details.html">
-                                            <p>Cactus Flower</p>
-                                        </a>
-                                        <h6>$10.99</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Single Product Area -->
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="single-product-area mb-50">
-                                    <!-- Product Image -->
-                                    <div class="product-img">
-                                        <a href="shop-details.html"><img src="img/bg-img/45.png" alt=""></a>
-                                        <div class="product-meta d-flex">
-                                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                            <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Info -->
-                                    <div class="product-info mt-15 text-center">
-                                        <a href="shop-details.html">
-                                            <p>Cactus Flower</p>
-                                        </a>
-                                        <h6>$10.99</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Single Product Area -->
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="single-product-area mb-50">
-                                    <!-- Product Image -->
-                                    <div class="product-img">
-                                        <a href="shop-details.html"><img src="img/bg-img/46.png" alt=""></a>
-                                        <div class="product-meta d-flex">
-                                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                            <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Info -->
-                                    <div class="product-info mt-15 text-center">
-                                        <a href="shop-details.html">
-                                            <p>Cactus Flower</p>
-                                        </a>
-                                        <h6>$10.99</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Single Product Area -->
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="single-product-area mb-50">
-                                    <!-- Product Image -->
-                                    <div class="product-img">
-                                        <a href="shop-details.html"><img src="img/bg-img/47.png" alt=""></a>
-                                        <!-- Product Tag -->
-                                        <div class="product-tag sale-tag">
-                                            <a href="#">Sale</a>
-                                        </div>
-                                        <div class="product-meta d-flex">
-                                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                            <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Info -->
-                                    <div class="product-info mt-15 text-center">
-                                        <a href="shop-details.html">
-                                            <p>Cactus Flower</p>
-                                        </a>
-                                        <h6>$10.99</h6>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Single Product Area -->
-                            <div class="col-12 col-sm-6 col-lg-4">
-                                <div class="single-product-area mb-50">
-                                    <!-- Product Image -->
-                                    <div class="product-img">
-                                        <a href="shop-details.html"><img src="img/bg-img/48.png" alt=""></a>
-                                        <div class="product-meta d-flex">
-                                            <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                            <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                            <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                                        </div>
-                                    </div>
-                                    <!-- Product Info -->
-                                    <div class="product-info mt-15 text-center">
-                                        <a href="shop-details.html">
-                                            <p>Cactus Flower</p>
-                                        </a>
-                                        <h6>$10.99</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
 
                         <!-- Pagination -->
                         <nav aria-label="Page navigation">
@@ -700,36 +380,7 @@ if(empty($_SESSION["shopping_cart"])) {
                         </div>
                     </div>
 
-                    <!-- Single Footer Widget -->
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="single-footer-widget">
-                            <div class="widget-title">
-                                <h5>BEST SELLER</h5>
-                            </div>
-
-                            <!-- Single Best Seller Products -->
-                            <div class="single-best-seller-product d-flex align-items-center">
-                                <div class="product-thumbnail">
-                                    <a href="shop-details.html"><img src="img/bg-img/4.jpg" alt=""></a>
-                                </div>
-                                <div class="product-info">
-                                    <a href="shop-details.html">Cactus Flower</a>
-                                    <p>$10.99</p>
-                                </div>
-                            </div>
-
-                            <!-- Single Best Seller Products -->
-                            <div class="single-best-seller-product d-flex align-items-center">
-                                <div class="product-thumbnail">
-                                    <a href="shop-details.html"><img src="img/bg-img/5.jpg" alt=""></a>
-                                </div>
-                                <div class="product-info">
-                                    <a href="shop-details.html">Tulip Flower</a>
-                                    <p>$11.99</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <!-- Single Footer Widget -->
                     <div class="col-12 col-sm-6 col-lg-3">

@@ -91,61 +91,53 @@ if(isset($_POST['login']))
 
     <div class="container">
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                            </div>
-                            <form name="loginformadmin" action="loginadmin.php" method="post">
-                            <div class="form-group">
-                              <input type="text" class="form-control form-control-user" placeholder="Username" name="admincode" required="required">
-                            </div>
-                            <div class="form-group">
-                              <input type="password" class="form-control form-control-user" placeholder="Password" name="addpassword" required="required">
-                            </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-user btn-block" name='login'>Login</button>
-                            <br>
-
-                          </form>
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.html">Already have an account? Login!</a>
-                            </div>
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block bg-register-image"><img src="img/bg-img/17.jpg" alt="" style="width:460px;height:400px;"></div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                         </div>
+                        <form name="loginformcust" action="loginadmin.php" method="post">
+                        <div class="form-group">
+                          <input type="text" class="form-control " placeholder="Username" name="admincode" required="required">
+                        </div>
+                        <div class="form-group">
+                          <input type="password" class="form-control " placeholder="Password" name="addpassword" required="required">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-user btn-block" name='login'>Login</button>
+                        <br>
+
+                      </form>
+                        <hr>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
     </div>
+  
       <!--  Modal-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          
           <h4 class="modal-title">
-									<?php if(isset($_GET['op'])) { echo loginTitle($_GET['op']); } ?>
-								</h4>
-							</div>
-							<div class="modal-body">
-								<p><?php if(isset($_GET['op'])) { echo loginMessage($_GET['op']); } ?></p>
-							</div>
+            <?php if(isset($_GET['op'])) { echo loginTitle($_GET['op']); } ?>
+          </h4>
+				</div>
+        <div class="modal-body">
+          <p><?php if(isset($_GET['op'])) { echo loginMessage($_GET['op']); } ?></p>
+        </div>
           </button>
           <div class="modal-footer">
-          <button class="btn btn-danger" type="button" data-dismiss="modal">OK</button>
-        </div>
-        </div>
-       
+            <button class="btn btn-danger" type="button" data-dismiss="modal">OK</button>
+          </div>
+      </div>
     </div>
   </div>
       <!--End modal -->

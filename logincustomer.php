@@ -19,7 +19,7 @@ function loginMessage($op)
 if(isset($_POST['login']))
 {
     include("connection/connection.php");
-
+    $custid = $_POST['custid'];
     $custemail = $_POST['custemail'];
     $custpassword = $_POST['custpassword'];
 
@@ -33,13 +33,22 @@ if(isset($_POST['login']))
     {
       session_start();
         $data = mysqli_fetch_assoc($qry);
-        
-	
-		$_SESSION['custid'] = $data['custid'];
-		$_SESSION['userlogged'] = 1;
-		$_SESSION['custname'] = $data['custname'];
-        header("Location: shop.php");
        
+      $_SESSION['custid'] = $data['custid'];
+      $_SESSION['userlogged'] = 1;
+      $_SESSION['custname'] = $data['custname'];
+
+      $sql1 = "SELECT * FROM orders WHERE custid = '".$_SESSION['custid']."' ";
+      $qry1  = mysqli_query($conn, $sql1);
+      $row1 = mysqli_num_rows($qry1);
+      //echo $row1;
+      if($row1 > 0)
+      {
+          header("Location: array.php");
+      }else
+      {
+        header("Location: shop.php");
+      }   
 
     }
     else {
@@ -96,7 +105,7 @@ if(isset($_POST['login']))
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"><img src="img/bg-img/21.jpg" alt="" style="width:460px;height:400px;"></div>
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
@@ -115,10 +124,7 @@ if(isset($_POST['login']))
                           </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.html">Already have an account? Login!</a>
+                                <a class="small" href="signup.php">Do not have an account? Sign up!</a>
                             </div>
                         </div>
                     </div>

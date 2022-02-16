@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <?php
 session_start();
+use PHPMailer\PHPMailer\PHPMailer;
+require 'PHPMailer/PHPMailer.php';
+require 'PHPMailer/Exception.php';
+require 'PHPMailer/SMTP.php';
 function modalTitle($op)
 {
 	if($op == 'success')
@@ -86,6 +90,102 @@ if(isset($_POST['checkout']))
         }
         
     }
+    $sql = "SELECT * FROM orders join plants on orders.plantid = plants.plantid 
+    join customers on orders.custid = customers.custid WHERE  orders.custid = '".$_SESSION['custid']."' ";
+    $qry = mysqli_query($dbconn,$sql);
+    $r=mysqli_fetch_assoc($qry);
+
+    $orderid = $r['orderid'];
+    $custname = $r['custname'];
+    $plantcode = $r['plantcode'];
+    $plantname = $r['plantname'];
+    $price = $r['price'];
+    $custphone = $r['custphone'];
+    $custemail = $r['custemail'];
+  //echo $email;
+  // Instantiation and passing `true` enables exceptions
+  $mail = new PHPMailer(true);
+  
+  try  
+  {
+      //Server settings
+     $mail->isSMTP();                                            // Set mailer to use SMTP
+          $mail->Host       = 'madihahhashim99@gmail.com';  // Specify main and backup SMTP servers
+          $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+          $mail->Username   = 'madihahhashim99@gmail.com';                     // SMTP username
+          $mail->Password   = 'abc123';                               // SMTP password
+          //$mail->SMTPSecure = 'ssl';                                  // Enable TLS encryption, `ssl` also accepted
+          $mail->Port       =  2525;                                     // TCP port to connect to
+  
+      //Recipients
+  
+  
+      $mail->setFrom('madihahhashim99@gmail.com', 'Alazea Sdn Bhd');
+      $mail->addAddress('$madihahhashim99@gmail.com', 'Customer');     // Add a recipient
+  
+  
+                 // Name is optional
+      $mail->addReplyTo('madihahhashim99@gmail.com', 'Detail');
+      $mail->addCC('cc@example.com');
+      $mail->addBCC('bcc@example.com');
+  
+      // Attachments
+      //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+      //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+  
+      // Content
+      $mail->isHTML(true);                                  // Set email format to HTML
+      $mail->Subject = 'Alazea Sdn Bhd';
+  
+      $mail->Body = '<html>
+                      <body>
+                      <h2>Your Detail  for Booking</h2>
+  
+                      <h1>Your booking has been confirm</h1>
+  
+                         <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ORDER ID</th>
+                                    <th>CUSTOMER NAME</th>
+                                    <th>PLANTS CODE</th>
+                                    <th>PLANTS NAME</th>
+                                    <th>PRICE</th>
+  
+                                </tr>
+                              </thead>
+  
+                              <tbody>
+                                <tr>
+                                <td>'.$orderid.'</td>
+                                <td>'.$custname.'</td>
+                                <td>'.$plantcode.'</td>
+                                <td>'.$plantname.'</td>
+                                <td>'.$price.'</td>
+  
+  
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+  
+                      </body>
+                      </html>';
+  
+      $mail->send();
+  
+  
+        echo"<script language = 'javascript'>
+        alert('Message has been sent!');
+        window.location='cart.php';</script>";
+  
+  
+  } 
+  catch (Exception $e) 
+  {
+      echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+  }
     session_unset("shopping_cart");
     session_destroy("shopping_cart");
 }
@@ -144,9 +244,9 @@ if(isset($_POST['checkout']))
                             <!-- Top Header Content -->
                             <div class="top-header-meta d-flex">
                                 
-                                <!-- Login -->
-                                <div class="login">
-                                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span>Login</span></a>
+                                 <!-- Logout -->
+                                 <div class="login">
+                                    <a href="index.php"><i class="fa fa-user" aria-hidden="true"></i> <span>Logout</span></a>
                                 </div>
                                 <!-- Cart -->
                                 <?php
@@ -196,37 +296,8 @@ if(isset($_POST['checkout']))
                             <div class="classynav">
                                 <ul>
                                     <li><a href="index.php">Home</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="#">Pages</a>
-                                        <ul class="dropdown">
-                                            <li><a href="index.php">Home</a></li>
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="shop.php">Shop</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="shop.php">Shop</a></li>
-                                                    <li><a href="shop-details.html">Shop Details</a></li>
-                                                    <li><a href="cart.php">Shopping Cart</a></li>
-                                                    <li><a href="checkout.html">Checkout</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="portfolio.html">Portfolio</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                                    <li><a href="single-portfolio.html">Portfolio Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="blog.html">Blog</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="single-post.html">Blog Details</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                        </ul>
-                                    </li>
                                     <li><a href="shop.php">Shop</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="vieworder.php">Order</a></li>
                                 </ul>
 
                                 <!-- Search Icon -->
@@ -258,7 +329,7 @@ if(isset($_POST['checkout']))
     <div class="breadcrumb-area">
         <!-- Top Breadcrumb Area -->
         <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(img/bg-img/24.jpg);">
-            <h2>Shop</h2>
+            <h2>Cart</h2>
         </div>
 
         <div class="container">
@@ -303,7 +374,7 @@ if(isset($_POST['checkout']))
                     <tbody>
                     <tr>
                     <td></td>
-                    <td>ITEM NAME</td>
+                    <td>PLANT NAME</td>
                     <td>QUANTITY</td>
                     <td>UNIT PRICE</td>
                     <td>ITEMS TOTAL</td>
@@ -313,13 +384,13 @@ if(isset($_POST['checkout']))
                     ?>
                     <tr>
                     <td>
-                    <img src='<?php echo $product["image"]; ?>' width="50" height="40" />
+                    <img src="img/bg-img/<?php echo $product["images"]; ?>" style="width:200px;height:200px;" />
                     </td>
                     <td><?php echo $product["plantname"]; ?><br />
                     <form method='post' action=''>
-                    <input type='text' name='plantcode' value="<?php echo $product["plantcode"]; ?>" />
+                    <input type='hidden' name='plantcode' value="<?php echo $product["plantcode"]; ?>" />
                     <input type='hidden' name='action' value="remove" />
-                    <button type='submit' class='remove'>Remove Item</button>
+                    <button type='submit' class='btn btn-danger btn-user btn-block'>Remove Item</button>
                     </form>
                     </td>
                     <td>
@@ -424,36 +495,7 @@ if(isset($_POST['checkout']))
                         </div>
                     </div>
 
-                    <!-- Single Footer Widget -->
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="single-footer-widget">
-                            <div class="widget-title">
-                                <h5>BEST SELLER</h5>
-                            </div>
-
-                            <!-- Single Best Seller Products -->
-                            <div class="single-best-seller-product d-flex align-items-center">
-                                <div class="product-thumbnail">
-                                    <a href="shop-details.html"><img src="img/bg-img/4.jpg" alt=""></a>
-                                </div>
-                                <div class="product-info">
-                                    <a href="shop-details.html">Cactus Flower</a>
-                                    <p>$10.99</p>
-                                </div>
-                            </div>
-
-                            <!-- Single Best Seller Products -->
-                            <div class="single-best-seller-product d-flex align-items-center">
-                                <div class="product-thumbnail">
-                                    <a href="shop-details.html"><img src="img/bg-img/5.jpg" alt=""></a>
-                                </div>
-                                <div class="product-info">
-                                    <a href="shop-details.html">Tulip Flower</a>
-                                    <p>$11.99</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <!-- Single Footer Widget -->
                     <div class="col-12 col-sm-6 col-lg-3">

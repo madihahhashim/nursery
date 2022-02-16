@@ -3,7 +3,7 @@
 
 session_start();
 include('connection/connection.php');
-//include("secure/encrypt_decrypt.php");
+include("secure/encrypt_decrypt.php");
 $sql = "SELECT * FROM plants join place on plants.placeid = place.placeid join types on plants.typeid = types.typeid ";
 $result = mysqli_query($conn,$sql);
 ?>
@@ -230,7 +230,7 @@ $result = mysqli_query($conn,$sql);
                                                     echo "<td>" . $row4['placename'] . "</td>";
                                                     echo "<td>" . $row4['typename'] . "</td>";
                                                     //echo "<td>" . $row4['sizename'] . "</td>";
-                                                    echo "<td><a href='updateplant.php?plantid=".$row4['plantid']."'>UPDATE</a></td>";
+                                                    echo "<td><a href='updateplant.php?plantid=".urlencode(secured_encrypt($row4['plantid']))."'>UPDATE</a></td>";
                                                     echo "</tr>";
                                                 
                                                 

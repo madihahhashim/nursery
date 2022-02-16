@@ -67,7 +67,7 @@ $result = mysqli_query($conn,$query);
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="indexadmin.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <img class="icon-circle" src="img/core-img/favicon.ico">
                 </div>
@@ -79,7 +79,7 @@ $result = mysqli_query($conn,$query);
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="indexadmin.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>

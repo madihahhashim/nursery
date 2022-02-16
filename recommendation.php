@@ -27,7 +27,7 @@ class Recommend {
                     $similar[$key] = 1;
             }
         }
-        
+        //print_r($similar);
         if(count($similar) == 0)
             return 0;
         
@@ -55,7 +55,7 @@ class Recommend {
                         $score[$otherPerson] = $sim;
                 }
             }
-        
+
         array_multisort($score, SORT_DESC);
         return $score;
     
@@ -75,6 +75,7 @@ class Recommend {
             }
         }
     }
+    //print_r($result);
         return $result;
     }
     
@@ -84,8 +85,8 @@ class Recommend {
         $total = array();
         $simSums = array();
         $ranks = array();
+        $id = array();
         $sim = 0;
-        //print_r($preferences);
 
         foreach($preferences as $otherPerson=>$values)
         {
@@ -93,8 +94,8 @@ class Recommend {
             {
                 $sim = $this->similarityDistance($preferences, $person, $otherPerson);
             }
-            echo "[".$person."-".$otherPerson."]  =>";
-            echo  sprintf("%.2f", $sim * 100) . "%<br>";
+            //echo "[".$person."-".$otherPerson."]  =>";
+            //echo  sprintf("%.2f", $sim * 100) . "%<br><br>";
             if($sim > 0)
             {
                 foreach($preferences[$otherPerson] as $key=>$value)
@@ -115,14 +116,60 @@ class Recommend {
                 
             }
         }
-
+        //print_r($total);  
         foreach($total as $key=>$value)
         {
             $ranks[$key] = $value / $simSums[$key];
+        }   
+        array_multisort($ranks, SORT_DESC);  
+        //print_r($ranks);
+        return $ranks;    
+    }
+
+
+    public function getIdRecommendations($preferences, $person)
+    {
+        $total = array();
+        $simSums = array();
+        $ranks = array();
+        $id = array();
+        $sim = 0;
+        //print_r($preferences);
+
+        foreach($preferences as $otherPerson=>$values)
+        {
+            if($otherPerson != $person)
+            {
+                $sim = $this->similarityDistance($preferences, $person, $otherPerson);
+            }
+            //echo $sim;
+            //echo "[".$person."-".$otherPerson."]  =>";
+            //echo  sprintf("%.2f", $sim * 100) . "%<br><br>";
+            if($sim > 0)
+            {
+                foreach($preferences[$otherPerson] as $key=>$value)
+                {
+                    if(!array_key_exists($key, $preferences[$person]))
+                    {
+                        if(!array_key_exists($key, $total)) {
+                            $total[$key] = 0;
+                        }
+                        $total[$key] += $preferences[$otherPerson][$key] * $sim;
+                        
+                        if(!array_key_exists($key, $simSums)) {
+                            $simSums[$key] = 0;
+                        }
+                        $simSums[$key] += $sim;
+                    }
+                }
+                
+            }
         }
-        
-    array_multisort($ranks, SORT_DESC);    
-    return $ranks;
+        foreach($total as $key=>$value)
+        {
+            array_push($id,$key);
+        }
+    return $id;
         
     }
    
