@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <?php
 session_start();
+include("connection/connection.php");
+include("secure/encrypt_decrypt.php");
 function modalTitle($op)
 {
   if($op == 'errkod')
@@ -26,9 +28,10 @@ if(isset($_POST['filter']))
     
     $query = "SELECT * FROM plants  WHERE placeid = $placeid and typeid = $typeid and sizeid = $sizeid ";
     $qry = mysqli_query($conn, $query);
-    $checkrows = mysqli_num_rows($qry); 
+    //$checkrows = mysqli_num_rows($qry); 
 
 }
+
 if(isset($_POST['buy']))
 {
 include("connection/connection.php");
@@ -252,7 +255,7 @@ if(empty($_SESSION["shopping_cart"])) {
                         <div >
                             <h4 class="widget-title">Types</h4>
                             <br>
-                            <input type="radio" id="flower" name="typeid" value="2">
+                            <input type="radio" id="flower" name="typeid" value="2" required>
                             <label for="flower">Flowers</label><br>
                             <input type="radio" id="tree" name="typeid" value="1">
                             <label for="tree">Trees</label><br>
@@ -268,7 +271,7 @@ if(empty($_SESSION["shopping_cart"])) {
                         <div >                       
                             <h4 class="widget-title">Places</h4>
                             <br>
-                            <input type="radio" id="indoor" name="placeid" value="1">
+                            <input type="radio" id="indoor" name="placeid" value="1" required>
                             <label for="indoor">Indoor Plant</label><br>
                             <input type="radio" id="outdoor" name="placeid" value="2">
                             <label for="outdoor">Outdoor Plant</label>
@@ -282,7 +285,7 @@ if(empty($_SESSION["shopping_cart"])) {
                         <div >                       
                             <h4 class="widget-title">Sizes</h4>
                             <br>
-                            <input type="radio" id="small" name="sizeid" value="1">
+                            <input type="radio" id="small" name="sizeid" value="1" required>
                             <label for="small">Small</label><br>
                             <input type="radio" id="medium" name="sizeid" value="2">
                             <label for="medium">Medium</label><br>
@@ -299,24 +302,27 @@ if(empty($_SESSION["shopping_cart"])) {
                     <div class="shop-products-area">
                         <div class="row">
                             <?php
-                           $counter = 1;
-                            while($row = mysqli_fetch_assoc($qry)){
-                                ?> 
-                                <!-- Single Product Area -->
+                           $counter = 1; 
+                           include("connection/connection.php");
+                           while($row = mysqli_fetch_assoc($qry)){
+                           
+                               ?> 
+                               <!-- Single Product Area -->
 
-                                        <div class='product_wrapper'>
-                                        <form method='post' action='shop.php'>
-                                            <input type='hidden' name='plantid' value=<?php echo "{$row['plantid']}" ;?>  />
-                                            <input type='hidden' name='plantcode' value=<?php echo "{$row['plantcode']}" ;?> />
-                                            <div class='image'><a href="shop-details.php?plantid=<?php echo "{".urlencode(secured_encrypt($row['plantid']))."}" ;?>"><img src="img/bg-img/<?php echo "{$row['images']}" ;?>" alt="" style="width:150px;height:150px;"></a></div>
-                                            <div class='name'><a href="shop-details.php?plantid=<?php echo "{".urlencode(secured_encrypt($row['plantid']))."}" ;?>"><?php echo "{$row['plantname']}" ;?></a></div>
-                                            <div class='price'>RM <?php echo "{$row['price']}" ;?></div>
-                                            <button type='submit'  class='buy'>Buy Now</button>
-                                        </div>
-                                        <?php      }
-                                            $counter++;
-                                             mysqli_close($conn);
-                                        ?>
+                                       <div class='product_wrapper'>
+                                           <form method='post' action='filter.php'>
+                                           <input type='hidden' name='plantid' value=<?php echo "{$row['plantid']}" ;?>  />
+                                           <input type='hidden' name='plantcode' value=<?php echo "{$row['plantcode']}" ;?> />
+                                           <div class='image'><a href="shop-details.php?plantid=<?php echo "{".urlencode(secured_encrypt($row['plantid']))."}" ;?>"><img src="img/bg-img/<?php echo "{$row['images']}" ;?>" alt="" style="width:150px;height:150px;"></a></div>
+                                           <div class='name'><a href="shop-details.php?plantid=<?php echo "{".urlencode(secured_encrypt($row['plantid']))."}" ;?>"><?php echo "{$row['plantname']}" ;?></a></div>
+                                           <div class='price'>RM <?php echo "{$row['price']}" ;?></div>
+                                           <button type='submit'  class='buy'>Buy Now</button>
+                                           </form>
+                                       </div>
+                                       <?php      }
+                                           $counter++;
+                                            mysqli_close($conn);
+                                       ?>
                                         <!-- Product Info -->
                                         <div style="clear:both;"></div>
                                         <div class="message_box" style="margin:10px 0px;">

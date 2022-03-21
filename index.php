@@ -134,7 +134,7 @@
                             <!-- Post Content -->
                             <div class="hero-slides-content text-center">
                                 <h2>Plants exist in the weather and light rays that surround them</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque ante nec ipsum iaculis, ac iaculis ipsum porttitor. Vivamus cursus nisl lectus, id mattis nisl lobortis eu. Duis diam augue, dapibus ut dolor at, mattis maximus dolor.</p>
+                                <p>They are made people more happy and cheerful since they are mood builders.</p>
                                 <div class="welcome-btn-group">
                                     <a href="#" class="btn alazea-btn mr-30">GET STARTED</a>
                                     <a href="#" class="btn alazea-btn active">CONTACT US</a>
@@ -155,7 +155,7 @@
                             <!-- Post Content -->
                             <div class="hero-slides-content text-center">
                                 <h2>Plants exist in the weather and light rays that surround them</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque ante nec ipsum iaculis, ac iaculis ipsum porttitor. Vivamus cursus nisl lectus, id mattis nisl lobortis eu. Duis diam augue, dapibus ut dolor at, mattis maximus dolor.</p>
+                                <p>The beauty of the flower brighten up the emotion of the people and light up their mood.</p>
                                 <div class="welcome-btn-group">
                                     <a href="#" class="btn alazea-btn mr-30">GET STARTED</a>
                                     <a href="#" class="btn alazea-btn active">CONTACT US</a>
@@ -196,7 +196,7 @@
                             <!-- Content -->
                             <div class="service-content">
                                 <h5>Plants Care</h5>
-                                <p>In Aenean purus, pretium sito amet sapien denim moste consectet sedoni urna placerat sodales.service its.</p>
+                                
                             </div>
                         </div>
 
@@ -209,7 +209,7 @@
                             <!-- Content -->
                             <div class="service-content">
                                 <h5>Pressure Washing</h5>
-                                <p>In Aenean purus, pretium sito amet sapien denim moste consectet sedoni urna placerat sodales.service its.</p>
+                                
                             </div>
                         </div>
 
@@ -222,7 +222,7 @@
                             <!-- Content -->
                             <div class="service-content">
                                 <h5>Tree Service &amp; Trimming</h5>
-                                <p>In Aenean purus, pretium sito amet sapien denim moste consectet sedoni urna placerat sodales.service its.</p>
+                                
                             </div>
                         </div>
 
@@ -252,7 +252,8 @@
                         <h2>ABOUT US</h2>
                         <p>We are leading in the plants service fields.</p>
                     </div>
-                    <p>Quisque orci quam, vulputate non commodo finibus, molestie ac ante. Duis in sceleri quesem. Nulla sit amet varius nunc. Maecenas dui, tempeu ullam corper in.</p>
+                    <p>We specialise in performing plant fulfilment for government entities, landscape contractors, licenced landscape professionals, garden centres, 
+                        and schools, among others, thanks to our extensive inventory. New clients are always welcome, and we endeavour to deliver the best possible customer service and satisfaction.</p>
 
                     <!-- Progress Bar Content Area -->
                     <div class="alazea-progress-bar mb-50">
@@ -310,7 +311,7 @@
                                 <div class="single-benefits-area">
                                     <img src="img/core-img/b1.png" alt="">
                                     <h5>Quality Products</h5>
-                                    <p>Intiam eu sagittis est, at commodo lacini libero. Praesent dignissim sed odio vel aliquam manta lagorn.</p>
+                                    
                                 </div>
                             </div>
 
@@ -319,7 +320,7 @@
                                 <div class="single-benefits-area">
                                     <img src="img/core-img/b2.png" alt="">
                                     <h5>Perfect Service</h5>
-                                    <p>Intiam eu sagittis est, at commodo lacini libero. Praesent dignissim sed odio vel aliquam manta lagorn.</p>
+                                    
                                 </div>
                             </div>
 
@@ -328,7 +329,7 @@
                                 <div class="single-benefits-area">
                                     <img src="img/core-img/b3.png" alt="">
                                     <h5>100% Natural</h5>
-                                    <p>Intiam eu sagittis est, at commodo lacini libero. Praesent dignissim sed odio vel aliquam manta lagorn.</p>
+                                    
                                 </div>
                             </div>
 
@@ -337,7 +338,7 @@
                                 <div class="single-benefits-area">
                                     <img src="img/core-img/b4.png" alt="">
                                     <h5>Environmentally friendly</h5>
-                                    <p>Intiam eu sagittis est, at commodo lacini libero. Praesent dignissim sed odio vel aliquam manta lagorn.</p>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -497,94 +498,7 @@
     </section>
     <!-- ##### Portfolio Area End ##### -->
 
-    <!-- ##### Testimonial Area Start ##### -->
-    <section class="testimonial-area section-padding-100">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="testimonials-slides owl-carousel">
-
-                        <!-- Single Testimonial Slide -->
-                        <div class="single-testimonial-slide">
-                            <div class="row align-items-center">
-                                <div class="col-12 col-md-6">
-                                    <div class="testimonial-thumb">
-                                        <img src="img/bg-img/13.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="testimonial-content">
-                                        <!-- Section Heading -->
-                                        <div class="section-heading">
-                                            <h2>TESTIMONIAL</h2>
-                                            <p>Some kind words from clients about Alazea</p>
-                                        </div>
-                                        <p>“Alazea is a pleasure to work with. Their ideas are creative, they came up with imaginative solutions to some tricky issues, their landscaping and planting contacts are equally excellent we have a beautiful but also manageable garden as a result. Thank you!”</p>
-                                        <div class="testimonial-author-info">
-                                            <h6>Mr. Nick Jonas</h6>
-                                            <p>CEO of NAVATECH</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Single Testimonial Slide -->
-                        <div class="single-testimonial-slide">
-                            <div class="row align-items-center">
-                                <div class="col-12 col-md-6">
-                                    <div class="testimonial-thumb">
-                                        <img src="img/bg-img/14.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="testimonial-content">
-                                        <!-- Section Heading -->
-                                        <div class="section-heading">
-                                            <h2>TESTIMONIAL</h2>
-                                            <p>Some kind words from clients about Alazea</p>
-                                        </div>
-                                        <p>“Alazea is a pleasure to work with. Their ideas are creative, they came up with imaginative solutions to some tricky issues, their landscaping and planting contacts are equally excellent we have a beautiful but also manageable garden as a result. Thank you!”</p>
-                                        <div class="testimonial-author-info">
-                                            <h6>Mr. Nazrul Islam</h6>
-                                            <p>CEO of NAVATECH</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Single Testimonial Slide -->
-                        <div class="single-testimonial-slide">
-                            <div class="row align-items-center">
-                                <div class="col-12 col-md-6">
-                                    <div class="testimonial-thumb">
-                                        <img src="img/bg-img/15.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="testimonial-content">
-                                        <!-- Section Heading -->
-                                        <div class="section-heading">
-                                            <h2>TESTIMONIAL</h2>
-                                            <p>Some kind words from clients about Alazea</p>
-                                        </div>
-                                        <p>“Alazea is a pleasure to work with. Their ideas are creative, they came up with imaginative solutions to some tricky issues, their landscaping and planting contacts are equally excellent we have a beautiful but also manageable garden as a result. Thank you!”</p>
-                                        <div class="testimonial-author-info">
-                                            <h6>Mr. Jonas Nick</h6>
-                                            <p>CEO of NAVATECH</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ##### Testimonial Area End ##### -->
+ 
 
     <!-- ##### Product Area Start ##### -->
     <section class="new-arrivals-products-area bg-gray section-padding-100">
@@ -611,11 +525,7 @@
                             <div class="product-tag">
                                 <a href="#">Hot</a>
                             </div>
-                            <div class="product-meta d-flex">
-                                <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                            </div>
+                           
                         </div>
                         <!-- Product Info -->
                         <div class="product-info mt-15 text-center">
@@ -633,11 +543,7 @@
                         <!-- Product Image -->
                         <div class="product-img">
                             <a href="shop-details.html"><img src="img/bg-img/10.jpg" alt=""></a>
-                            <div class="product-meta d-flex">
-                                <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                            </div>
+                          
                         </div>
                         <!-- Product Info -->
                         <div class="product-info mt-15 text-center">
@@ -655,11 +561,7 @@
                         <!-- Product Image -->
                         <div class="product-img">
                             <a href="shop-details.html"><img src="img/bg-img/11.jpg" alt=""></a>
-                            <div class="product-meta d-flex">
-                                <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                            </div>
+                            
                         </div>
                         <!-- Product Info -->
                         <div class="product-info mt-15 text-center">
@@ -681,11 +583,7 @@
                             <div class="product-tag sale-tag">
                                 <a href="#">Hot</a>
                             </div>
-                            <div class="product-meta d-flex">
-                                <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
-                                <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
-                            </div>
+                           
                         </div>
                         <!-- Product Info -->
                         <div class="product-info mt-15 text-center">
@@ -697,9 +595,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 text-center">
-                    <a href="#" class="btn alazea-btn">View All</a>
-                </div>
+        
 
             </div>
         </div>
@@ -735,7 +631,7 @@
                                 <a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i> 20 Jun 2018</a>
                                 <a href="#"><i class="fa fa-user" aria-hidden="true"></i> Alan Jackson</a>
                             </div>
-                            <p class="post-excerpt">Integer luctus diam ac scerisque consectetur. Vimus ottawas nec lacus sit amet. Aenean interdus mid vitae.</p>
+                            
                         </div>
                     </div>
                 </div>
@@ -754,7 +650,7 @@
                                 <a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i> 20 Jun 2018</a>
                                 <a href="#"><i class="fa fa-user" aria-hidden="true"></i> Christina Aguilera</a>
                             </div>
-                            <p class="post-excerpt">Integer luctus diam ac scerisque consectetur. Vimus ottawas nec lacus sit amet. Aenean interdus mid vitae.</p>
+                            
                         </div>
                     </div>
                 </div>
@@ -773,7 +669,7 @@
                                 <a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i> 19 Jun 2018</a>
                                 <a href="#"><i class="fa fa-user" aria-hidden="true"></i> Mason Jenkins</a>
                             </div>
-                            <p class="post-excerpt">Integer luctus diam ac scerisque consectetur. Vimus ottawas nec lacus sit amet. Aenean interdus mid vitae.</p>
+                            
                         </div>
                     </div>
                 </div>
@@ -783,34 +679,7 @@
     </section>
     <!-- ##### Blog Area End ##### -->
 
-    <!-- ##### Subscribe Area Start ##### -->
-    <section class="subscribe-newsletter-area" style="background-image: url(img/bg-img/subscribe.png);">
-        <div class="container">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-12 col-lg-5">
-                    <!-- Section Heading -->
-                    <div class="section-heading mb-0">
-                        <h2>Join the Newsletter</h2>
-                        <p>Subscribe to our newsletter and get 10% off your first purchase</p>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-6">
-                    <div class="subscribe-form">
-                        <form action="#" method="get">
-                            <input type="email" name="subscribe-email" id="subscribeEmail" placeholder="Enter your email">
-                            <button type="submit" class="btn alazea-btn">SUBSCRIBE</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Subscribe Side Thumbnail -->
-        <div class="subscribe-side-thumb wow fadeInUp" data-wow-delay="500ms">
-            <img class="first-img" src="img/core-img/leaf.png" alt="">
-        </div>
-    </section>
-    <!-- ##### Subscribe Area End ##### -->
 
     <!-- ##### Contact Area Start ##### -->
     <section class="contact-area section-padding-100-0">

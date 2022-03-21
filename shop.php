@@ -238,16 +238,16 @@ $status="";
                     <h4 class="widget-title">Categories</h4>
                     <!-- Divider -->
                         <hr class="sidebar-divider d-none d-md-block">
-                    <form  method="post" action = "filter.php" >
+                        <form  method="post" action = "filter.php" >
                         <!-- Shop Widget -->
                         <div >
                             <h4 class="widget-title">Types</h4>
                             <br>
-                            <input type="radio" id="flower" name="typeid" value="2">
+                            <input type="radio" id="flower" name="typeid" value="2" >
                             <label for="flower">Flowers</label><br>
                             <input type="radio" id="tree" name="typeid" value="1">
                             <label for="tree">Trees</label><br>
-                            <input type="radio" id="herb" name="typeid" value="3">
+                            <input type="radio" id="herb" name="typeid" value="3"required>
                             <label for="herb">Herbs</label>
                         </div>
                         <br>
@@ -259,9 +259,9 @@ $status="";
                         <div >                       
                             <h4 class="widget-title">Places</h4>
                             <br>
-                            <input type="radio" id="indoor" name="placeid" value="1">
+                            <input type="radio" id="indoor" name="placeid" value="1" >
                             <label for="indoor">Indoor Plant</label><br>
-                            <input type="radio" id="outdoor" name="placeid" value="2">
+                            <input type="radio" id="outdoor" name="placeid" value="2"required>
                             <label for="outdoor">Outdoor Plant</label>
                         </div>
                         <br>
@@ -277,7 +277,7 @@ $status="";
                             <label for="small">Small</label><br>
                             <input type="radio" id="medium" name="sizeid" value="2">
                             <label for="medium">Medium</label><br>
-                            <input type="radio" id="big" name="sizeid" value="3">
+                            <input type="radio" id="big" name="sizeid" value="3" required>
                             <label for="big">Big</label>
                         </div>
                         <br>
